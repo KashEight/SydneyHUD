@@ -53,7 +53,8 @@ if not SydneyHUD.setup then
 		[1] = "english",
 		[2] = "japanese",
 		[3] = "french",
-		[4] = "russian"
+		[4] = "russian",
+		[5] = "portuguese"
 	}
 
 	-- var for util
@@ -101,6 +102,7 @@ if not SydneyHUD.setup then
 		["lib/managers/chatmanager"] = "ChatManager.lua",
 		["lib/managers/enemymanager"] = "EnemyManager.lua",
 		["lib/managers/group_ai_states/groupaistatebase"] = "GroupAIStateBase.lua",
+		["lib/managers/hud/hudchat"] = "HUDChat.lua",
 		["lib/managers/hud/hudassaultcorner"] = "HUDAssaultCorner.lua",
 		["lib/managers/hud/hudinteraction"] = "HUDInteraction.lua",
 		["lib/managers/hud/hudpresenter"] = "HUDPresenter.lua",
@@ -411,14 +413,15 @@ if not SydneyHUD.setup then
 		end
 	end
 
-	function SydneyHUD:SaveChatMessage(name, message)
+	function SydneyHUD:SaveChatMessage(name, message) -- WIP
 		table.insert(self._chat, tostring(name .. ": " .. message))
 	end
 
-	function SydneyHUD:RemoveChatMessage(type, message)
+	function SydneyHUD:RemoveChatMessage(type, message) -- WIP
 		if not type then
 			type = "current"
 		end
+
 		if type == "all" then
 			for _, _ in ipairs(self._chat) do
 				table.remove(self._chat)
@@ -457,7 +460,7 @@ if not SydneyHUD.setup then
 		if peer then
 			local warn_down = 3
 
-			if Global.game_settings.difficulty == "sm_wish" then
+			if Global.game_settings.one_down then
 				warn_down = 1
 			end
 
@@ -501,7 +504,7 @@ if not SydneyHUD.setup then
 	end
 
 	function SydneyHUD:Peer_id_To_Peer(peer_id)
-		local session = managers.network.session()
+		local session = managers.network:session()
 		return session and session:peer(peer_id)
 	end
 
